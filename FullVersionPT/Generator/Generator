@@ -1,7 +1,0 @@
-package generator
-
-type Generator struct {
-	limit int64
-}
-
-func numberGenerator(limit64)
