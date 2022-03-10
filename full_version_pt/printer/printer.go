@@ -2,6 +2,7 @@ package printer
 
 import (
 	"sort"
+	"sync"
 )
 
 type Printer struct {
@@ -12,7 +13,7 @@ func NewPrinter(limit int) *Printer {
 	return &Printer{limit: limit}
 }
 
-func (p *Printer) PrintNumbers(number <-chan int, resultChanel chan<- []int) {
+func (p *Printer) PrintNumbers(number <-chan int, resultChanel chan<- []int, mutex chan sync.Mutex) {
 
 	resultSlice := make([]int, 0)
 	tempMap := map[int]struct{}{}

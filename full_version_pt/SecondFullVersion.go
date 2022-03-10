@@ -6,6 +6,7 @@ import (
 	"full_version_pt/generator"
 	"full_version_pt/printer"
 	"os"
+	"sync"
 )
 
 // defaultFlagValue - Дефолтное количество генерируемых чисел
@@ -32,13 +33,14 @@ func main() {
 
 	numberChanel := make(chan int)
 	resultChanel := make(chan []int, 1)
+	mutexChanel := make(chan sync.Mutex)
 
 	printer := printer.NewPrinter(numberFlag)
-	go printer.PrintNumbers(numberChanel, resultChanel)
+	go printer.PrintNumbers(numberChanel, resultChanel, mutexChanel)
 
 	for i := 0; i < chanelFlag; i++ {
 		generator := generator.NewGenerator(numberFlag)
-		go generator.RandomNumber(numberChanel)
+		go generator.RandomNumber(numberChanel, mutexChanel)
 	}
 	resultNumbers := <-resultChanel
 	fmt.Println(resultNumbers)
